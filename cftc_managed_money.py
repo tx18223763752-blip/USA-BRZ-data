@@ -42,6 +42,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+# ========= matplotlib中文配置（GitHub Actions 专用）=========
+plt.rcParams["font.sans-serif"] = ["Noto Sans CJK SC"]
+plt.rcParams["axes.unicode_minus"] = False
+# ===========================================================
+
 # ---------------------------------------------------------------------------
 # 常量配置
 # ---------------------------------------------------------------------------
