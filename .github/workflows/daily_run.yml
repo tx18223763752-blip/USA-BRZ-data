@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install numpy pandas requests matplotlib beautifulsoup4
+          pip install numpy pandas requests matplotlib beautifulsoup4 python-calamine
 
       - name: Run all python scripts
         run: |
