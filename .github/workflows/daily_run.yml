@@ -41,9 +41,9 @@ jobs:
       # ========== 执行绘图脚本，生成图片 ==========
       - name: Execute python script
         run: |
-          python generate_usda_charts.py
+          python cftc_managed_money.py
           python conab_soy_auto.py
-          python cftc_plot.py# 替换成你的py脚本文件名
+          python generate_usda_charts.py
 
       # ========== 提交生成的图片文件回github仓库 ==========
       - name: Commit & Push generated chart image
