@@ -39,6 +39,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # 拉取远程最新代码，解决版本冲突
+          git pull origin main --allow-unrelated-histories
+          # 添加变更文件
           git add .
-          git commit -m "Auto update data $(date '+%Y-%m-%d')" || echo "No changes to commit"
-          git push
+          # 提交，无变更则跳过提交；[skip ci] 防止循环触发workflow
+          git commit -m "Auto update charts and data [skip ci]" || echo "No changes to commit"
+          git push origin main
