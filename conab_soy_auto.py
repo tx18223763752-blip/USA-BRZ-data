@@ -224,7 +224,7 @@ def _to_rows(xlsx_bytes: bytes) -> list[list]:
         import calamine  # 旧版本模块名
     except ImportError:
         import python_calamine as calamine  # 0.8.x 新模块名
-    wb = calamine.CalamineWorkbook.from_file(io.BytesIO(xlsx_bytes))
+    wb = calamine.CalamineWorkbook.from_filelike(io.BytesIO(xlsx_bytes))
     sheet = wb.get_sheet_by_name(wb.sheetnames[0])
     return sheet.to_python()
 
