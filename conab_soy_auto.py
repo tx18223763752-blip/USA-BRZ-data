@@ -596,12 +596,12 @@ def plot_comparisons(df: pd.DataFrame, out_dir: str,
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib.ticker import PercentFormatter
-
     plt.rcParams.update({
         "font.size": 9,
-        "font.sans-serif": ["Microsoft YaHei", "SimHei", "Arial Unicode MS"],
+        "font.sans-serif": ["Noto Sans CJK SC"],
         "axes.unicode_minus": False,
     })
+
     states = [c for c in STATES if c in set(df["state"])]
     if TOTAL_STATE in set(df["state"]):
         states = states + [TOTAL_STATE]
