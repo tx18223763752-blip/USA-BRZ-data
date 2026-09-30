@@ -96,9 +96,11 @@ YEAR_COLORS = {
     # 2026 固定为红色，不在此处定义
 }
 
+
 # =========================== 字体配置 ===========================
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'DejaVu Sans']
+plt.rcParams['font.sans-serif'] = ["Noto Sans CJK SC"]
 plt.rcParams['axes.unicode_minus'] = False
+
 
 
 # =========================== 核心函数 ===========================
