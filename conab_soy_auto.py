@@ -244,7 +244,7 @@ def _parse_date(cell) -> date | None:
 
 
 def _norm_state(name: str) -> str:
-    name = (name or "").strip()
+    name = str(name).replace("nan", "").strip()
     if name.lower().startswith("12 estado"):
         return TOTAL_STATE
     return name
