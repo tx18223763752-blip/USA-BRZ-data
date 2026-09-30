@@ -43,7 +43,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 # ========= matplotlib中文配置（GitHub Actions 专用）=========
-plt.rcParams["font.sans-serif"] = ["Noto Sans CJK SC"]
+plt.rcParams["font.sans-serif"] = ["Noto Sans CJK SC", "WenQuanYi Zen Hei"]
 plt.rcParams["axes.unicode_minus"] = False
 # ===========================================================
 
