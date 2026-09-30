@@ -55,7 +55,7 @@ import matplotlib.pyplot as plt
 # =========================== 配置区（用户可修改） ===========================
 
 # 输入 Excel 文件路径
-INPUT_FILE = r"E:\precip-excel\USA-soy\USDA_Soybean_Data_2020_2026.xlsx"
+INPUT_FILE = "./USDA_Soybean_Data_2020_2026.xlsx"
 
 # 输出目录（脚本所在目录）
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
