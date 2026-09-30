@@ -1,13 +1,12 @@
 name: Daily Update Data
 
-
 on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write   # 允许把脚本产出的数据/图表自动提交回仓库
+  contents: write
 
 jobs:
   run-scripts:
@@ -28,18 +27,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install numpy pandas requests matplotlib openpyxl python-calamine
 
-      # 图表脚本使用中文标题/标注，安装中文字体避免图片乱码
       - name: Install Chinese fonts
         run: |
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk
 
-      # 脚本原本面向 Windows 环境，这里在 runner 上做临时适配：
-      #   1) cftc_managed_money.py  输出目录 E:\precip-excel\...  -> 脚本所在目录
-      #   2) generate_usda_charts.py 输入文件 E:\precip-excel\... -> progress.py 生成的脚本目录 xlsx
-      #   3) conab_soy_auto.py      把 auto.csv 纳入历史基线，实现真正增量
-      #   4) 三个绘图脚本的中文字体列表追加 Noto Sans CJK SC
-      # （只改 runner 上的副本，不影响仓库源码）
       - name: Patch scripts for Linux runner
         run: |
           python - <<'PYEOF'
@@ -83,27 +75,22 @@ jobs:
           ])
           PYEOF
 
-      # 1) 先抓 USDA 数据生成 xlsx（首次全量较慢，后续增量）
       - name: Run progress.py (USDA NASS -> Excel)
         run: python progress.py
         continue-on-error: true
 
-      # 2) 再用 xlsx 生成 USDA 图表（依赖上一步产物）
       - name: Run generate_usda_charts.py
         run: python generate_usda_charts.py
         continue-on-error: true
 
-      # 3) CONAB 巴西大豆种植/收获进度（增量）
       - name: Run conab_soy_auto.py
         run: python conab_soy_auto.py
         continue-on-error: true
 
-      # 4) CFTC Managed Money 持仓（增量）
       - name: Run cftc_managed_money.py
         run: python cftc_managed_money.py
         continue-on-error: true
 
-      # 提交并推送所有更新（无变化时自动跳过）
       - name: Commit & push updated files
         run: |
           git config --global user.name "github-actions[bot]"
