@@ -1,0 +1,43 @@
+name: Daily Update Data
+
+# 定时触发：每天 UTC 时间 0点（北京时间早上8点）运行，可自行改时间
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  # 可选：手动在页面点按钮触发测试
+  workflow_dispatch:
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # 这里填上你的依赖，比如 pandas, requests, matplotlib 等
+          # pip install pandas requests numpy matplotlib beautifulsoup4
+
+      - name: Run all python scripts
+        run: |
+          python cftc_managed_money.py
+          python conab_soy_auto.py
+          python generate_usda_charts.py
+          python progress.py
+
+      - name: Commit & push updated files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto update data $(date '+%Y-%m-%d')" || echo "No changes to commit"
+          git push
