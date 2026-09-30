@@ -1,48 +1,54 @@
-name: run-scripts
+name: Run Python Plot & Generate Image
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+    # 忽略github actions bot的提交，避免循环触发
+    paths-ignore:
+      - '**.png'
+  workflow_dispatch: # 支持在Github页面手动触发运行
 
 jobs:
-  run-scripts:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # 关键：配置token，允许后续提交图片回仓库
+          persist-credentials: true
           fetch-depth: 0
 
-      # 下面保留你原来所有步骤：安装python、pip、运行脚本、Commit & push ...
+      # ========== 【解决图片中文方框核心步骤】安装Noto中文字体 ==========
+      - name: Install Noto CJK Chinese Font
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          # 删除matplotlib字体缓存，防止旧缓存继续渲染方框（必保留！）
+          rm -rf ~/.cache/matplotlib
 
-
-      - name: Setup Python
+      # ========== Python环境准备 ==========
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install numpy pandas requests matplotlib beautifulsoup4 python-calamine==0.7.0 openpyxl lxml
+          # 把你项目所有依赖补齐：pandas matplotlib numpy 等
+          pip install pandas matplotlib numpy
 
-      - name: Run all python scripts
+      # ========== 执行绘图脚本，生成图片 ==========
+      - name: Execute python script
         run: |
-          python cftc_managed_money.py
-          python conab_soy_auto.py
-          python generate_usda_charts.py
-          python progress.py
+          python your_script_name.py  # 替换成你的py脚本文件名
 
-      - name: Commit & push updated files
+      # ========== 提交生成的图片文件回github仓库 ==========
+      - name: Commit & Push generated chart image
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          # 拉取远程最新代码，解决版本冲突
-          git pull origin main --allow-unrelated-histories
-          # 添加变更文件
           git add .
-          # 提交，无变更则跳过提交；[skip ci] 防止循环触发workflow
-          git commit -m "Auto update charts and data [skip ci]" || echo "No changes to commit"
-          git push origin main
+          # 判断是否有文件变更，没有变更就跳过提交
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto update generated plot chart"
+          git push
