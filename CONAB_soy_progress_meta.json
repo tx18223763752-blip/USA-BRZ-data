@@ -1,0 +1,26 @@
+{
+  "source": "CONAB Progresso de Safra（官网周报 Plantio e Colheita xlsx）",
+  "generated": "2026-09-29 09:18",
+  "history_base": "CONAB_soy_progress_2022_2026.csv",
+  "rows": 3576,
+  "coverage": "2022-01-15 至 2026-09-25",
+  "states": [
+    "12 estados",
+    "Bahia",
+    "Goiás",
+    "Maranhão",
+    "Mato Grosso",
+    "Mato Grosso do Sul",
+    "Minas Gerais",
+    "Paraná",
+    "Piauí",
+    "Rio Grande do Sul",
+    "Santa Catarina",
+    "São Paulo",
+    "Tocantins"
+  ],
+  "metrics": {
+    "planting": "种植率 Semeadura",
+    "harvest": "收获率 Colheita"
+  }
+}
