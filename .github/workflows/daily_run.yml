@@ -1,18 +1,22 @@
-name: Daily Update Data
-
+name: run-scripts
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   run-scripts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          persist-credentials: true
+          fetch-depth: 0
+
+      # 下面保留你原来所有步骤：安装python、pip、运行脚本、Commit & push ...
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
