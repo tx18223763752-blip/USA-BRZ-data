@@ -1,7 +1,6 @@
 name: Daily Update Data
 
-# 每天自动运行一次（cron 为 UTC 时间，'0 0 * * *' = 北京时间每天 08:00）
-# 也支持在 GitHub 仓库 Actions 页面手动触发
+
 on:
   schedule:
     - cron: '0 0 * * *'
